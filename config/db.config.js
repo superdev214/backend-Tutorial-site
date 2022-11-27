@@ -1,2 +1,6 @@
-const config = require('/config');
-const {db: {HOST, USER, PASSWORD, DB, dialect, pool} } = config;
+const config = require("./config");
+const {
+  db
+} = config;
+
+module.exports = db;
