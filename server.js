@@ -1,7 +1,7 @@
 const express = require("express");
 const config  = require("././config/config");
 const cors    = require('cors');
-const db      = require("./model");
+const db      = require("./model/");
 const app     = express();
 /**
  *  Feature : This code allows you to access the server
@@ -10,7 +10,7 @@ const app     = express();
  * 
  */
 app.use(cors({
-    origin: 'https://localhost:3001' //FrontEnd port : 3001 
+    origin: '*' //FrontEnd port : 3001 
 }));
 //end
 app.use(express.json());
@@ -22,9 +22,10 @@ db.sequelize.sync()
   .catch((err) => {
     console.log("Failed to sync db: " + err.message);
   });
-app.get("/", (req, res) => {
-    res.send("Hello world");
-})
+  require("./routes/router")(app);
+// app.get("/", (req, res) => {
+//     res.send("Hello world");
+// })
 
 
 app.listen(config.app.port);
