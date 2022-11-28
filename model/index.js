@@ -1,5 +1,7 @@
 const dbConfig = require("../config/db.config");
-
+const mongoose = require("mongoose");
+/*
+@ ----  MySql data  ----
 const Sequelize = require("Sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
@@ -19,5 +21,13 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   db.sequelize = sequelize;
   
   db.tutorials = require("./model.js")(sequelize, Sequelize);
-  
-  module.exports = db;
+  */
+mongoose.connect(dbConfig.url, { useNewUrlParser: true });
+const db = mongoose.connection;
+db.once("open", (_) => {
+  console.log("Database connected", dbConfig.url);
+});
+db.on("error", (err) => {
+  console.log(err);
+});
+module.exports = db;

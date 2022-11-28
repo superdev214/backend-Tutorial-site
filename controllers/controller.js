@@ -1,4 +1,5 @@
-const db = require("../model");
+const TutorialSchema = require("../model/model");
+/*
 const Tutorial = db.tutorials;
 const Op = db.Sequelize.Op;
 
@@ -100,3 +101,76 @@ exports.update = (req, res) => {
       })
     })
   }
+  */
+
+exports.create = (req, res) => {
+  console.log(req.body);
+  const tutorial = {
+    title: req.body.title,
+    description: req.body.description,
+    published: req.body.published,
+  };
+  TutorialSchema.create(tutorial)
+    .then((msg) => {
+      res.send({
+        msg: "success",
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+exports.findAllorTitle = (req, res) => {
+  const title = req.query.title;
+  console.log(title);
+  if ((title === "") | (title === undefined)) {
+    console.log("right");
+    TutorialSchema.find()
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Some errors occured",
+        });
+      });
+  } else {
+    console.log("false");
+    TutorialSchema.find({ title: `${title}` })
+      .then((data) => {
+        res.send(data);
+        console.log(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Some errors occured",
+        });
+      });
+  }
+};
+exports.findByTitle = (req, res) => {
+  const title = req.query.title;
+  console.log(req.query);
+  TutorialSchema.find({ title })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Some errors occured",
+      });
+    });
+};
+exports.deleteAll = (req, res) => {
+  TutorialSchema.deleteMany({ })
+    .then(function () {
+      console.log("Data deleted"); // Success
+      res.send({
+        message : "All Remove "
+      })
+    })
+    .catch(function (error) {
+      console.log(error); // Failure
+    });
+};
