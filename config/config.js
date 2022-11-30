@@ -20,7 +20,8 @@ const config = {
     //  MySql db end
     db : {
         url : 'mongodb://127.0.0.1:27017/testdb'
-    }
+    },
+    jwt_key : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
 };
 
 module.exports = config;

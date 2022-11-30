@@ -1,6 +1,7 @@
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
-
+const config = require("../config/config");
+const jwt_key = config.jwt_key;
 exports.register = async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body;
@@ -26,13 +27,14 @@ exports.register = async (req, res) => {
         user_id: user._id,
         email,
       },
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+    jwt_key,
       { expiresIn: "2h" }
     );
     // // save user token
     user.token = token;
     // return new user
     res.status(200).send({msg:"success"});
+    res.status(200).json(user);
   } catch (err) {
     console.log(err);
   }
@@ -54,15 +56,17 @@ exports.login = async (req, res) => {
           user_id: user._id,
           email,
         },
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+        jwt_key,
         { expiresIn: "2h" }
       );
       // save user token
       user.token = token;
 
       res.status(200).send({
-        msg : "success"
+        msg : "success",
+        user
       });
+      
     } else {
       res.status(400).send("Invalid Credentials");
     }
